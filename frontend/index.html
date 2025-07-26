@@ -224,7 +224,7 @@
       };
 
       try {
-        const res = await fetch('http://localhost:5000/api/bookings', {
+        const res = await fetch('/api/bookings', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
@@ -232,11 +232,11 @@
 
         const result = await res.json();
         if (res.ok) {
-          alert(result.message);
+          alert(result.message || "Booking successful!");
           form.reset();
-          window.location.href = "pricing.html"; // Redirect to pricing after booking
+          window.location.href = "pricing.html"; // redirect to pricing page
         } else {
-          alert("Something went wrong. Try again.");
+          alert(result.message || "Something went wrong. Try again.");
         }
       } catch (err) {
         alert("Server error. Please try again later.");
