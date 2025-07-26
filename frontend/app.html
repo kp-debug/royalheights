@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Application - Royal Heights</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      padding: 2rem;
+    }
+    h1 {
+      color: #e50914;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    form {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, select, button {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #e50914;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #c40710;
+    }
+    .success {
+      color: green;
+      text-align: center;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Student Application Form</h1>
+
+  <form id="application-form">
+    <input type="text" name="name" placeholder="Student Name" required />
+    <input type="number" name="age" placeholder="Age" required />
+    
+    <select name="classType" required>
+      <option value="">Select Class Type</option>
+      <option>Arduino Robotics</option>
+      <option>Website Creation</option>
+    </select>
+
+    <input type="date" name="date" required />
+    <input type="email" name="email" placeholder="Parent's Email" required />
+    <input type="text" name="phone" placeholder="Parent's Phone Number" required />
+    <input type="text" name="location" placeholder="Location" required />
+
+    <button type="submit">Submit Application</button>
+    <p class="success" id="success-msg" style="display: none;">✅ Application submitted successfully!</p>
+  </form>
+
+  <script>
+    document.getElementById('application-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = e.target;
+
+      const formData = {
+        name: form.name.value,
+        age: Number(form.age.value),
+        classType: form.classType.value,
+        date: form.date.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        location: form.location.value,
+      };
+
+      try {
+        const res = await fetch('http://localhost:5000/api/applications', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        if (res.ok) {
+          document.getElementById('success-msg').style.display = 'block';
+          form.reset();
+        } else {
+          alert("❌ Failed to submit. Try again.");
+        }
+      } catch (err) {
+        alert("❌ Server error. Please try again.");
+        console.error(err);
+      }
+    });
+  </script>
+
+</body>
+</html>

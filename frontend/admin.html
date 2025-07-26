@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Royal Heights</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #e50914;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 1rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #e50914;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📋 Student Applications</h1>
+
+  <table id="bookings-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Class Type</th>
+        <th>Date</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    fetch('/api/bookings')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#bookings-table tbody');
+        tbody.innerHTML = ''; // Clear existing rows
+
+        data.forEach(booking => {
+          const row = `
+            <tr>
+              <td>${booking.name || '—'}</td>
+              <td>${booking.age || '—'}</td>
+              <td>${booking.classType || '—'}</td>
+              <td>${booking.date || '—'}</td>
+              <td>${booking.email || '—'}</td>
+              <td>${booking.parentPhone || '—'}</td>
+              <td>${booking.location || '—'}</td>
+            </tr>`;
+          tbody.innerHTML += row;
+        });
+      })
+      .catch(err => {
+        alert('❌ Error loading bookings');
+        console.error(err);
+      });
+  </script>
+
+</body>
+</html>
